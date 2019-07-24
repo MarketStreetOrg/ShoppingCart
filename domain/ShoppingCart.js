@@ -11,7 +11,7 @@ priceCalculator = (items) => {
         map(item => {
 
             let [it, qty] = item;
-            return (it.getPrice()*it.getDiscount())*qty;
+            return (it.getPrice() * it.getDiscount()) * qty;
         }),
 
         reduce((a, b) => a + b)
@@ -28,7 +28,7 @@ class ShoppingCart {
     items = new Map();
 
     constructor() {
-        let id=0;
+        let id = 0;
     }
 
 

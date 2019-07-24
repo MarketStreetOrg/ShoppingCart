@@ -1,6 +1,7 @@
 const express = require('express')
+const {router}=require('./router')
+const {Item} = require('./domain/Item')
 const { ShoppingCart } = require('./domain/ShoppingCart')
-const { Item } = require('./domain/Item')
 
 let app = express();
 
@@ -29,6 +30,9 @@ let cart = new ShoppingCart.CartBuilder()
     .build();
 
 console.log(cart.calculateTotalPrice())
+
+app.set('x-powered-by',false)
+app.use(router)
 
 app.listen(8081, "localhost").on('listening', () => {
 
