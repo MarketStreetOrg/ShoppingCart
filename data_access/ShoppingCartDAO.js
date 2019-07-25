@@ -2,12 +2,15 @@ const { GenericDAO } = require("./GenericDAO");
 const mongoose = require('mongoose')
 const { from } = require('rxjs')
 const { map } = require('rxjs/operators')
+const env =require('dotenv')
+
+const {parsed:config} = env.config();
 
 class ShoppingCartDAO extends GenericDAO {
 
     constructor() {
         super()
-        mongoose.connect('mongodb://localhost:27017/ShoppingCart', { useNewUrlParser: true })
+        mongoose.connect(config.mongoURL, { useNewUrlParser: true })
 
         this.Cart = mongoose.model('Cart',
             {
