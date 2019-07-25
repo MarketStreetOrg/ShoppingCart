@@ -1,23 +1,78 @@
 const express = require('express')
-const cors=require('cors')
+const cors = require('cors')
 
-const jsonParser = express.json;
+//Domain
+const { ShoppingCart } = require('./domain/ShoppingCart')
+
+//Service 
+const { ShoppingCartService } = require('./services/ShoppingCartService')
+
+//middleware
+const jsonParser = express.json();
+
 const router = express.Router();
 
-corsOptions={
-    origin:"http:localhost:8081/",
-    methods:"GET,PUT,POST"
+const cartService = new ShoppingCartService();
+
+corsOptions = {
+    origin: "http:localhost:8081/",
+    methods: "GET,PUT,POST"
 }
 
-router.all('/',cors(corsOptions),(req, res, next) => {
-    return next();
-})
+router
+    .all('/', cors(corsOptions), (req, res, next) => {
 
-router.get('/',(req,res,next)=>{
-    console.log("And we are here");
-    next();
-})
+        cartService.findAll().then(data => {
+            res.json(data)
 
+        }).then(data => { return next(); }).catch(console.log)
+    })
 
+    .get('/cart', (req, res, next) => {
 
-module.exports={router}
+        const { id } = req.query;
+
+        cartService.findOne(id).then(data => {
+
+            res.json(data)
+           
+            next();
+        });
+    })
+
+    .post('/new', jsonParser, (req, res, next) => {
+
+        let data = req.body;
+        const { items } = data
+
+        let cart = new ShoppingCart.CartBuilder();
+
+        items.forEach(item => {
+            cart.addItem(item, item.quantity)
+        });
+
+        cart.build();
+
+        cartService.create(cart.cart);
+
+        next();
+
+    })
+
+    .put('/cart',jsonParser, (req,res,next)=>{
+
+        const { id } = req.query;
+
+        let data = req.body;
+        const { items } = data
+
+        let cart = new ShoppingCart.CartBuilder();
+
+        items.forEach(item => {
+            cart.addItem(item, item.quantity)
+        });
+
+        cartService.update(id,cart.build()).then(next());
+    })
+
+module.exports = { router }
