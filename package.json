@@ -1,0 +1,26 @@
+{
+  "name": "shoppingcart",
+  "version": "1.0.0",
+  "description": "package.json for shopping cart",
+  "main": "server.js",
+  "scripts": {
+    "test": "node server.js",
+    "start": "node server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/MarketStreetOrg/ShoppingCart.git"
+  },
+  "author": "Steven Katabalwa",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/MarketStreetOrg/ShoppingCart/issues"
+  },
+  "homepage": "https://github.com/MarketStreetOrg/ShoppingCart#readme",
+  "dependencies": {
+    "dotenv": "^8.2.0",
+    "express": "^4.17.1",
+    "mongodb": "^3.6.2",
+    "mongoose": "^5.10.5"
+  }
+}

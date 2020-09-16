@@ -31,6 +31,9 @@ class ShoppingCart {
         let id = 0;
     }
 
+    getCustomerId = () => {
+        return this.customerId;
+    }
 
     getId = () => {
         return id;
@@ -109,6 +112,11 @@ class ShoppingCart {
 
         cart = new ShoppingCart();
 
+        setCustomerId(id){
+            this.cart.customerId = id;
+            return this;
+        }
+
         setId(id) {
             this.cart.id = id;
             return this;
@@ -125,6 +133,8 @@ class ShoppingCart {
             else {
                 this.cart.items.set(item, 1);
             }
+            console.log("cart: " + this.cart);
+
             return this;
         }
 
