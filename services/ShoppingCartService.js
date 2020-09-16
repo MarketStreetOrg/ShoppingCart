@@ -8,23 +8,23 @@ class ShoppingCartService extends GenericService {
         this.dao = DAO ? DAO : new ShoppingCartDAO();
     }
 
-    create(data) {
-        this.dao.create(data);
+    async create(data) {
+        return this.dao.create(data);
     }
 
-    findAll() {
+    async findAll() {
         return this.dao.findAll();
     }
 
-    findOne(id) {
+    async findOne(id) {
         return this.dao.findOne(id);
     }
 
-    update(id,cart) {
+    async update(id,cart) {
         return this.dao.update(id, cart)
     }
 
-    remove(id) {
+    async remove(id) {
         return this.dao.remove(id);
     }
 

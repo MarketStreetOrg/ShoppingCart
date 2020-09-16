@@ -15,7 +15,7 @@ const router = express.Router();
 const cartService = new ShoppingCartService();
 
 corsOptions = {
-    origin: "http:localhost:8081/",
+    origin: "http://localhost:8081/",
     methods: "GET,PUT,POST"
 }
 
@@ -35,17 +35,22 @@ router
         cartService.findOne(id).then(data => {
 
             res.json(data)
-           
+
             next();
         });
     })
 
-    .post('/new', jsonParser, (req, res, next) => {
+    .post('/cart', jsonParser, (req, res, next) => {
 
         let data = req.body;
-        const { items } = data
+        const { items, customerId } = data
+        console.log(data);
 
         let cart = new ShoppingCart.CartBuilder();
+
+        cart.setId(customerId);
+
+        cart.setCustomerId(customerId);
 
         items.forEach(item => {
             cart.addItem(item, item.quantity)
@@ -53,13 +58,13 @@ router
 
         cart.build();
 
-        cartService.create(cart.cart);
-
-        next();
+        cartService.create(cart.cart).then(result => {
+            res.json(result);
+        });
 
     })
 
-    .put('/cart',jsonParser, (req,res,next)=>{
+    .put('/cart', jsonParser, (req, res, next) => {
 
         const { id } = req.query;
 
@@ -72,7 +77,7 @@ router
             cart.addItem(item, item.quantity)
         });
 
-        cartService.update(id,cart.build()).then(next());
+        cartService.update(id, cart.build()).then(next());
     })
 
 module.exports = { router }

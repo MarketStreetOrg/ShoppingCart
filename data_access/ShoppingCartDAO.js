@@ -1,10 +1,12 @@
 const { GenericDAO } = require("./GenericDAO");
 const mongoose = require('mongoose')
+const MongoClient = require('mongodb')
 const { from } = require('rxjs')
 const { map } = require('rxjs/operators')
-const env =require('dotenv')
+const env = require('dotenv');
+const { json } = require("express");
 
-const {parsed:config} = env.config();
+const { parsed: config } = env.config();
 
 class ShoppingCartDAO extends GenericDAO {
 
@@ -12,12 +14,14 @@ class ShoppingCartDAO extends GenericDAO {
         super()
         mongoose.connect(config.mongoURL, { useNewUrlParser: true })
 
-        this.Cart = mongoose.model('Cart',
+        this.Cart = mongoose.model('ShoppingCart',
             {
+                _id: String,
+                customerId: String,
                 dateCreated: Date,
                 dateModified: Date,
                 items: []
-            })
+            }, "ShoppingCart")
     }
 
     create = async (ShoppingCart) => {
@@ -39,13 +43,25 @@ class ShoppingCartDAO extends GenericDAO {
             items.push({ name: name, unitPrice: unitPrice, discount: discount, quantity: quantity });
         });
 
-        CartModel.set('items', items)
+        CartModel.set("_id", ShoppingCart.id);
+        CartModel.set("customerId", ShoppingCart.customerId);
+        CartModel.set('items', items);
         CartModel.set('dateCreated', Date.now());
 
-        await CartModel.save().then(
-            console.log("Cart has been created")
-        );
+        let con = mongoose.connection;
 
+        const shoppingCart = { "_id": ShoppingCart.id, "customerId": ShoppingCart.customerId, "items": items, "dateCreated": Date.now() };
+
+        con.db.collection("ShoppingCart").updateOne({ _id: ShoppingCart.id }, { $set: shoppingCart }, { upsert: true }, function (err, res) {
+            if (err) console.error(err);
+            console.log("1 document updated");
+        });
+
+        // await CartModel.save().then(
+        //     console.log("Cart has been created")
+        // );
+
+        return items;
     }
 
     remove = (id) => {
