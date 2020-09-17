@@ -1,6 +1,5 @@
 const rxjs = require('rxjs')
 const { map, reduce } = require('rxjs/operators');
-const { isTypeNode } = require('typescript');
 const { from } = rxjs;
 
 priceCalculator = (items) => {
