@@ -1,5 +1,6 @@
 const rxjs = require('rxjs')
-const { map, reduce } = require('rxjs/operators')
+const { map, reduce } = require('rxjs/operators');
+const { isTypeNode } = require('typescript');
 const { from } = rxjs;
 
 priceCalculator = (items) => {
@@ -8,10 +9,11 @@ priceCalculator = (items) => {
 
     from(items).pipe(
 
-        map(item => {
+        map(item => item[0]),
 
-            let [it, qty] = item;
-            return (it.getPrice() * it.getDiscount()) * qty;
+        map(item => {
+            let { unitPrice: price, quantity: qty, discount } = item;
+            return (price * discount * qty);
         }),
 
         reduce((a, b) => a + b)
@@ -98,7 +100,7 @@ class ShoppingCart {
     }
 
 
-    calculateTotalPrice = () => {
+    getTotalPrice = () => {
         return priceCalculator(this.items);
     }
 
@@ -112,7 +114,7 @@ class ShoppingCart {
 
         cart = new ShoppingCart();
 
-        setCustomerId(id){
+        setCustomerId(id) {
             this.cart.customerId = id;
             return this;
         }

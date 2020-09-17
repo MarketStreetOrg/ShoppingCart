@@ -47,10 +47,17 @@ class ShoppingCartDAO extends GenericDAO {
         CartModel.set("customerId", ShoppingCart.customerId);
         CartModel.set('items', items);
         CartModel.set('dateCreated', Date.now());
+        CartModel.set("totalPrice", ShoppingCart.totalPrice);
 
         let con = mongoose.connection;
 
-        const shoppingCart = { "_id": ShoppingCart.id, "customerId": ShoppingCart.customerId, "items": items, "dateCreated": Date.now() };
+        const shoppingCart = { 
+            "_id": ShoppingCart.id, 
+            "customerId": ShoppingCart.customerId, 
+            "items": items, 
+            "dateCreated": Date.now(),
+            "totalPrice": ShoppingCart.getTotalPrice()
+     };
 
         con.db.collection("ShoppingCart").updateOne({ _id: ShoppingCart.id }, { $set: shoppingCart }, { upsert: true }, function (err, res) {
             if (err) console.error(err);
