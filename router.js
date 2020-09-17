@@ -15,7 +15,7 @@ const router = express.Router();
 const cartService = new ShoppingCartService();
 
 corsOptions = {
-    origin: "http://localhost:8081/",
+    origin: "http://localhost:8080/",
     methods: "GET,PUT,POST"
 }
 
