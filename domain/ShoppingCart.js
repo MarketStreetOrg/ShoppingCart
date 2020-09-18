@@ -12,7 +12,7 @@ priceCalculator = (items) => {
 
         map(item => {
             let { unitPrice: price, quantity: qty, discount } = item;
-            return (price * discount * qty);
+            return ((price * qty) - (discount * qty));
         }),
 
         reduce((a, b) => a + b)

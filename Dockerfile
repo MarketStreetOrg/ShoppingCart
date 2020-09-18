@@ -1,9 +1,12 @@
 FROM node:12
+
 WORKDIR /usr/src/katale/app
 
 ARG PORT
 ARG HOST
 ARG MONGOURL
+ARG CONTAINER_NAME
+ARG IMAGE_REPO_NAME
 
 ENV port=${PORT}
 ENV host=${HOST}
@@ -13,7 +16,9 @@ COPY package*.json ./
 
 RUN npm install
 
-RUN printf '[{"name":"$CONTAINER_NAME","imageUri":"$IMAGE_REPO_NAME"}]' > imagedefinitions.json
+RUN printf '[{"name":"%s","imageUri":"%s"}]' $CONTAINER_NAME $IMAGE_REPO_NAME > imagedefinitions.json
+
+RUN ls -lrt
 
 COPY . .
 
