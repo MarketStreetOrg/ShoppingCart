@@ -1,9 +1,9 @@
 FROM node:12
 WORKDIR /usr/src/katale/app
 
-ARG PORT=8080
-ARG HOST="localhost"
-ARG MONGOURL="mongodb+srv://StevenKatabalwa:root@shoppingcartcluster.qgkbf.mongodb.net/katale?retryWrites=true&w=majority"
+ARG PORT
+ARG HOST
+ARG MONGOURL
 
 ENV port=${PORT}
 ENV host=${HOST}
