@@ -1,4 +1,5 @@
 FROM node:12
+
 WORKDIR /usr/src/katale/app
 
 ARG PORT
