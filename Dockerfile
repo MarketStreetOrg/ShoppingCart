@@ -13,6 +13,8 @@ COPY package*.json ./
 
 RUN npm install
 
+RUN printf '[{"name":"$CONTAINER_NAME","imageUri":"$IMAGE_REPO_NAME"}]' > imagedefinitions.json
+
 COPY . .
 
 EXPOSE 8080
