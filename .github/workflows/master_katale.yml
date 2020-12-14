@@ -29,9 +29,9 @@ jobs:
     - name: 'Deploy to Azure Web App'
       uses: azure/webapps-deploy@v2
       env:
-        PORT: ${{secrets.PORT}}
-        HOST: ${{secrets.HOST}}
-        MONGOURL: ${{secrets.MONGOURL}}
+        port: ${{secrets.PORT}}
+        host: ${{secrets.HOST}}
+        mongoURL: ${{secrets.MONGOURL}}
       with:
         app-name: 'katale'
         slot-name: 'production'
